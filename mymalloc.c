@@ -28,5 +28,6 @@ void * mymalloc (size_t size, char *file, int line){
         initialize_heap();
         initialized = true;
     }
+    return NULL;
 };
 void myfree (void *ptr, char *file, int line);
