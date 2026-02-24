@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
+
 #define MEMLENGTH 4096
 
 //static initialization variable
@@ -24,10 +26,25 @@ void initialize_heap(){
     initial_metadata -> is_free = true;
 }
 
+//exit logic
+void check_memory_leak_exit(){
+    printf("Checking memory leak\n");
+    Metadata* initial_metadata = (Metadata*)heap.bytes;
+    if (initialized && !initial_metadata->is_free){
+        fprintf(stderr,"memory leaked, %zu bytes used",initial_metadata->metadata_size);
+    }
+    else{
+        printf("Exit Success!");
+    }
+}
 void * mymalloc (size_t size, char *file, int line){
     if (!initialized){
         //initialize logic
         initialize_heap();
+        
+        //set exit handler
+        atexit(check_memory_leak_exit);
+        
         initialized = true;
     }
     return NULL;
