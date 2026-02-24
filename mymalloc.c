@@ -13,7 +13,7 @@ static union {
 } heap;
 
 typedef struct{
-    size_t metadata_size;
+    size_t data_size;
     bool is_free;
 } Metadata;
 
@@ -22,18 +22,29 @@ void initialize_heap(){
     Metadata * initial_metadata = (Metadata *)heap.bytes;
 
     // initialize the metadata size, the first metadata is the size of the entire free space available
-    initial_metadata -> metadata_size = MEMLENGTH - sizeof(Metadata);
+    initial_metadata -> data_size = MEMLENGTH - sizeof(Metadata);
     initial_metadata -> is_free = true;
 }
 
 //exit logic
 void check_memory_leak_exit(){
     printf("Checking memory leak\n");
-    Metadata* initial_metadata = (Metadata*)heap.bytes;
-    if (initialized && !initial_metadata->is_free){
-        fprintf(stderr,"memory leaked, %zu bytes used",initial_metadata->metadata_size);
+    //boolean to check if leak was found
+    bool found_leak = false;
+    //current is a char* uses pointer arithmetic to iterate through the malloc array
+    char* current = (char *)heap.bytes;
+    while(current< (char *)heap.bytes + MEMLENGTH){
+        Metadata* cur_metadata = (Metadata*)current;
+        
+        //logic if a leak is found
+        if ( !cur_metadata->is_free){
+            fprintf(stderr,"memory leaked, %zu bytes used at location %p",cur_metadata->data_size,current+sizeof(Metadata));
+            found_leak = true;
+        }
+        
+        current+=sizeof(Metadata)+cur_metadata->data_size;
     }
-    else{
+    if(!found_leak){
         printf("Exit Success!");
     }
 }
