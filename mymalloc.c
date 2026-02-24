@@ -2,6 +2,9 @@
 #include <stdbool.h>
 #define MEMLENGTH 4096
 
+//static initialization variable
+static bool initialized = false;
+
 static union {
     char bytes[MEMLENGTH];
     double not_used;
@@ -22,7 +25,6 @@ void initialize_heap(){
 }
 
 void * mymalloc (size_t size, char *file, int line){
-    static bool initialized = false;
     if (!initialized){
         //initialize logic
         initialize_heap();
