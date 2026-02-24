@@ -76,5 +76,8 @@ void myfree (void *ptr, char *file, int line){
         
         initialized = true;
     }
+    //code to go to the beginning of a metadata instead of the chunk
+    Metadata* cur_metadata = (Metadata*)((char*) ptr - sizeof(Metadata));
+    cur_metadata->is_free = true;
 
 };
