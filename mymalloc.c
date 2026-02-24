@@ -9,8 +9,6 @@ static union {
 
 struct metadata{
     size_t metadata_size;
-    struct metadata* next;
-    struct metadata* prev;
     bool is_free;
 }Metadata;
 
