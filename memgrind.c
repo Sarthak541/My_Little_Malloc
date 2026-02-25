@@ -101,11 +101,55 @@ then free the third element
         free(temp);
     }
 }
+
+typedef struct BST_Node{
+    struct BST_Node* left;
+    struct BST_Node* right;
+    int data;
+} BST_Node;
 void task5(){
 /*
-Remove the second largest element in a binary tree. Do this by removing the parent of
-the rightmost child
+Remove the largest element in a binary search tree. Do this by removing the rightmost child
 */
+
+BST_Node* head = malloc(sizeof(BST_Node));
+head->data = 8;
+head->left = malloc(sizeof(BST_Node));
+head->left->data = 4;
+head->right = malloc(sizeof(BST_Node));
+head->right->data= 12;
+head->right->left = malloc(sizeof(BST_Node));
+head->right->left->data = 10;
+head->right->right=malloc(sizeof(BST_Node));
+head->right->right->data = 14;
+
+BST_Node* cursor = head;
+BST_Node* cursor2 = head->right;
+
+while (cursor2!=NULL){
+    if (cursor2->right==NULL && cursor2->left==NULL){
+        cursor->right = NULL;
+    }
+    else if(cursor2->right==NULL && cursor2->left!=NULL){
+        cursor->right = cursor2->left;
+        free(cursor2);
+    }
+    else{
+        cursor2 = cursor2->right;
+        cursor = cursor->right;
+    }
+}
+
+free_bst(head);
+
+}
+void free_bst(BST_Node* head){
+    if(head==NULL){
+        return;
+    }
+    free_bst(head->left);
+    free_bst(head->right);
+    free(head);
 }
 
 int main(int argc, char* argv[]){
