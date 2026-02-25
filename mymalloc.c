@@ -91,6 +91,32 @@ void coalesce() {
     }
 }
 
+//valid_pointer checks if agiven pointer is a valid payload pointer
+bool valid_pointer(void* ptr){
+    if(ptr == NULL){
+        return false;
+    }
+    //checks if pointer is within bounds
+    char* heap_start = (char*)heap.bytes + sizeof(Metadata);
+    char* heap_end = (char*)heap.bytes + MEMLENGTH;
+    if((char*)ptr < heap_start || (char*)ptr >= heap_end){
+        return false;
+    }
+    //check if pointer matters payload start
+    char* current = (char*)heap.bytes;
+    while(current < heap_end){
+        Metadata* cur_metadata = (Metadata*)current;
+        char* payload = current + sizeof(Metadata);
+        if(payload == (char*)ptr){
+            //matches payload
+            return true;
+        }
+        current += sizeof(Metadata) + cur_metadata->data_size;
+    }
+    //pointer in bounds but does not match chunk's payload
+    return false;
+}
+
 //free logic
 void myfree (void *ptr, char *file, int line){
     if (!initialized){
