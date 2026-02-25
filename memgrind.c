@@ -8,10 +8,7 @@
 #endif
 
 void task1(){
-    for (size_t i = 0; i < 120 ; i++){
-        char* my_obj = malloc(1);
-        free(my_obj);
-    }
+    
 }
 void task2(){
 
