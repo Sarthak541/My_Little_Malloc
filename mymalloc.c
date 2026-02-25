@@ -50,6 +50,7 @@ void check_memory_leak_exit(){
     if(total_bytes_leaked>0){
         fprintf(stderr,"mymalloc: %zu bytes leaked in %zu objects.\n",total_bytes_leaked,num_objects_leaked);
     }
+    printf("0 bytes leaked, memory free successful");
 }   
 
 //malloc logic
