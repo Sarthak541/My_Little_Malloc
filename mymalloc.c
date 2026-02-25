@@ -62,6 +62,30 @@ void * mymalloc (size_t size, char *file, int line){
         
         initialized = true;
     }
+
+    char* heap_end = (char*)heap.bytes+MEMLENGTH;
+    char* cur_heap_spot = (char*)heap.bytes;
+
+    size_t size_req = (size+7)&~7;
+    while (cur_heap_spot<heap_end){
+        Metadata* cur_metadata = (Metadata*)cur_heap_spot;
+        if (cur_metadata->is_free && cur_metadata->data_size>=size_req){
+            //Splitting process, we'll split if we can reasonably fit another metadata
+            size_t split_req = size_req + sizeof(Metadata) + 8;
+            //we will split if we can fit a new metadata and at least 8 bytes
+            if (cur_metadata->data_size>=split_req){
+                char* new_metadata_spot = cur_heap_spot + sizeof(Metadata) + size_req;
+                Metadata* new_metadata = (Metadata*) new_metadata_spot;
+                new_metadata->data_size = cur_metadata->data_size-size_req-sizeof(Metadata);
+                new_metadata->is_free = true;
+                cur_metadata->data_size=size_req;
+            }
+            cur_metadata->is_free=false;
+            
+            return cur_heap_spot+sizeof(Metadata);
+        }
+        cur_heap_spot+=sizeof(Metadata)+cur_metadata->data_size;
+    }
     return NULL;
 }
 
