@@ -63,7 +63,7 @@ void * mymalloc (size_t size, char *file, int line){
         initialized = true;
     }
     return NULL;
-};
+}
 
 void coalesce() {
     char* heap_end = (char*)heap.bytes + MEMLENGTH;
@@ -141,6 +141,6 @@ void myfree (void *ptr, char *file, int line){
     //call coalesce after every free to ensure all memory is accessible
     coalesce();
 
-};
+}
 
 
