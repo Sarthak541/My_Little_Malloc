@@ -22,8 +22,33 @@ void task2(){
         free(ptrs[i]);
     }
 }
-void task3(){
+void task3() {
+    char *ptrs[120];
+    int current_count = 0;
+    int total_mallocs = 0;
 
+    while (total_mallocs < 120) {
+        int action = rand() % 2;
+
+        if (action == 0) { // Allocate
+            ptrs[current_count] = (char*)malloc(1);
+            if (ptrs[current_count] != NULL) {
+                current_count++;
+                total_mallocs++;
+            }
+        } 
+        else if (current_count > 0) { 
+            int rand_idx = rand() % current_count;
+            free(ptrs[rand_idx]);
+            ptrs[rand_idx] = ptrs[current_count - 1];
+            current_count--;
+        }
+    }
+
+    // Deallocate remaining
+    for (int i = 0; i < current_count; i++) {
+        free(ptrs[i]);
+    }
 }
 void task4(){
 /*
