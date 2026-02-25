@@ -58,8 +58,8 @@ main (int argc, char **argv)
 	
 	printf("%d incorrect bytes\n", errors);
 
-	// Requirement Test: free() deallocates memory
-	//allocates objects until heap if full --> frees --> then allocates again
+	// Requirement Tested: free() deallocates memory
+	// (1) allocates objects until heap if full, (2) frees, (3) then allocates again
 	//If free() works --> reallocation should work
 	printf("\n Test: free() deallocates memory \n");
 	{
@@ -99,6 +99,45 @@ main (int argc, char **argv)
 		else{
 			printf("free() does not deallocate memory; test failed with %d errors\n", alloc_errors);
 		}
+	}
+	
+	// Requirement Tested: coealescing adjacent free blocks 
+	// (1) allocates many small objects to heap, (2) frees them, (3) attempts a large allocation
+	// If coalescing works --> step 3 will work
+	printf("\n Test: coealescing adjacent free blocks \n");
+	{
+		//allocate small chunks
+		char *ptrs[OBJECTS];
+		for(i = 0; i < OBJECTS; i++){
+			ptrs[i] = malloc(OBJSIZE);
+			if(ptrs[i] = NULL){
+				printf("Coalesce setup: unable to allocate object%d\n", i);
+			}
+		}
+		//free small chunks
+		for(i = 0; i < OBJECTS; i++){
+			if(ptrs[i] = NULL){
+				free(ptrs[i]);
+				ptrs[i] = NULL;
+			}
+		}
+		//allocates large
+		size_t large_size = MEMSIZE - HEADERSIZE * 2;
+		char* large = malloc(large_size);
+		if(large == NULL){
+			printf("Coalesce test failed: could not allocate %zu bytes after freeing all objects\n", large_size);
+		}
+		else{
+			printf("Coalesce test passed: large allocation succeeded after freeing small chunks\n", large_size);
+			free(large);
+		}
+	}
+
+	// Requirement Tested: leaked objects detected 
+	if (LEAK){
+		printf("\n Test: free() deallocates memory \n");
+		printf("LEAK mode enabled: objects from original test were not freed\n");
+		printf("Check stderr at program exit for the leak detector message.\n");
 	}
 	
 	return EXIT_SUCCESS;
