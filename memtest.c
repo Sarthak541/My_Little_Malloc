@@ -57,6 +57,49 @@ main (int argc, char **argv)
 	}
 	
 	printf("%d incorrect bytes\n", errors);
+
+	// Requirement Test: free() deallocates memory
+	//allocates objects until heap if full --> frees --> then allocates again
+	//If free() works --> reallocation should work
+	printf("\n Test: free() deallocates memory \n");
+	{
+		char *ptrs[OBJECTS];
+		int alloc_errors = 0;
+		//First Allocation
+		for(i = 0; i < OBJECTS; i++){
+			ptrs[i] = malloc(OBJSIZE);
+			if(ptrs[i] = NULL){
+				printf("First Allocation: unable to allocate object %d\n", i);
+				alloc_errors++;
+			}
+		}
+		//Free
+		for(i = 0; i < OBJECTS; i++){
+			if(ptrs[i] != NULL) {
+				free(ptrs[i]);
+				ptrs[i] = NULL;
+			}
+		}
+		//Second Allocation
+		for(i = 0; i < OBJECTS; i++){
+			ptrs[i] = malloc(OBJSIZE);
+			if(ptrs[i] = NULL){
+				printf("Second Allocation: unable to allocate object %d --> free may not work\n", i);
+				alloc_errors++;
+			}
+		}
+		for(i = 0; i < OBJECTS; i++){
+			if(ptrs[i] != NULL) {
+				free(ptrs[i]);
+			}
+		}
+		if(alloc_errors == 0){
+			printf("free() deallocates memory; test passed\n");
+		}
+		else{
+			printf("free() does not deallocate memory; test failed with %d errors\n", alloc_errors);
+		}
+	}
 	
 	return EXIT_SUCCESS;
 }
