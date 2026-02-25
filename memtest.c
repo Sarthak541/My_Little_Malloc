@@ -68,7 +68,7 @@ main (int argc, char **argv)
 		//First Allocation
 		for(i = 0; i < OBJECTS; i++){
 			ptrs[i] = malloc(OBJSIZE);
-			if(ptrs[i] = NULL){
+			if(ptrs[i] == NULL){
 				printf("First Allocation: unable to allocate object %d\n", i);
 				alloc_errors++;
 			}
@@ -83,7 +83,7 @@ main (int argc, char **argv)
 		//Second Allocation
 		for(i = 0; i < OBJECTS; i++){
 			ptrs[i] = malloc(OBJSIZE);
-			if(ptrs[i] = NULL){
+			if(ptrs[i] == NULL){
 				printf("Second Allocation: unable to allocate object %d --> free may not work\n", i);
 				alloc_errors++;
 			}
@@ -110,13 +110,13 @@ main (int argc, char **argv)
 		char *ptrs[OBJECTS];
 		for(i = 0; i < OBJECTS; i++){
 			ptrs[i] = malloc(OBJSIZE);
-			if(ptrs[i] = NULL){
+			if(ptrs[i] == NULL){
 				printf("Coalesce setup: unable to allocate object%d\n", i);
 			}
 		}
 		//free small chunks
 		for(i = 0; i < OBJECTS; i++){
-			if(ptrs[i] = NULL){
+			if(ptrs[i] == NULL){
 				free(ptrs[i]);
 				ptrs[i] = NULL;
 			}
@@ -128,7 +128,7 @@ main (int argc, char **argv)
 			printf("Coalesce test failed: could not allocate %zu bytes after freeing all objects\n", large_size);
 		}
 		else{
-			printf("Coalesce test passed: large allocation succeeded after freeing small chunks\n", large_size);
+			printf("Coalesce test passed: large allocation succeeded after freeing small chunks\n");
 			free(large);
 		}
 	}
