@@ -1,2 +1,5 @@
 #Object Files
 *.o
+
+#Executables
+memtest
