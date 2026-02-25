@@ -135,7 +135,7 @@ main (int argc, char **argv)
 
 	// Requirement Tested: leaked objects detected 
 	if (LEAK){
-		printf("\n Test: free() deallocates memory \n");
+		printf("\n Test: Leak detection \n");
 		printf("LEAK mode enabled: objects from original test were not freed\n");
 		printf("Check stderr at program exit for the leak detector message.\n");
 	}
