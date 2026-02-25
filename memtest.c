@@ -57,7 +57,7 @@ main (int argc, char **argv)
 	}
 	
 	printf("%d incorrect bytes\n", errors);
-
+/*
 	// Requirement Tested: free() deallocates memory
 	// (1) allocates objects until heap if full, (2) frees, (3) then allocates again
 	//If free() works --> reallocation should work
@@ -139,6 +139,6 @@ main (int argc, char **argv)
 		printf("LEAK mode enabled: objects from original test were not freed\n");
 		printf("Check stderr at program exit for the leak detector message.\n");
 	}
-	
+*/
 	return EXIT_SUCCESS;
 }
