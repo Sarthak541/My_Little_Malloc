@@ -153,12 +153,51 @@ void free_bst(BST_Node* head){
 }
 
 int main(int argc, char* argv[]){
-
-    task1();
-    task2();
-    task3();
-    task4();
-    task5();
-    
-    return EXIT_SUCCESS;
+   struct timeval start;
+   struct timeval end;
+   //since timeval(which is based on sys/time.h) is long, elapsed is also long
+   long elapsed;
+   //task1 timing
+   gettimeofday(&start, NULL);
+   for(int i = 0; i<50; i++){
+       task1();
+   }
+   gettimeofday(&end, NULL);
+   //think of this as a mixed fraction --> whole number
+   elapsed = (end.tv_sec - start.tv_sec) * 10000000 + (end.tv_usec - start.tv_usec);
+   //divides 50 because we want average
+   printf("Task 1 average: %ld microseconds\n", elapsed / 50);
+   //task2 timing
+   gettimeofday(&start, NULL);
+   for(int i = 0; i<50; i++){
+       task2();
+   }
+   gettimeofday(&end, NULL);
+   elapsed = (end.tv_sec - start.tv_sec) * 10000000 + (end.tv_usec - start.tv_usec);
+   printf("Task 1 average: %ld microseconds\n", elapsed / 50);
+   //task3 timing
+   gettimeofday(&start, NULL);
+   for(int i = 0; i<50; i++){
+       task3();
+   }
+   gettimeofday(&end, NULL);
+   elapsed = (end.tv_sec - start.tv_sec) * 10000000 + (end.tv_usec - start.tv_usec);
+   printf("Task 1 average: %ld microseconds\n", elapsed / 50);
+   //task4 timing
+   gettimeofday(&start, NULL);
+   for(int i = 0; i<50; i++){
+       task4();
+   }
+   gettimeofday(&end, NULL);
+   elapsed = (end.tv_sec - start.tv_sec) * 10000000 + (end.tv_usec - start.tv_usec);
+   printf("Task 1 average: %ld microseconds\n", elapsed / 50);
+   //task5 timing
+       gettimeofday(&start, NULL);
+   for(int i = 0; i<50; i++){
+       task5();
+   }
+   gettimeofday(&end, NULL);
+   elapsed = (end.tv_sec - start.tv_sec) * 10000000 + (end.tv_usec - start.tv_usec);
+   printf("Task 1 average: %ld microseconds\n", elapsed / 50);
+   return EXIT_SUCCESS;
 }
