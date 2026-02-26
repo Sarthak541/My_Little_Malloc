@@ -107,6 +107,16 @@ typedef struct BST_Node{
     struct BST_Node* right;
     int data;
 } BST_Node;
+
+void free_bst(BST_Node* head){
+    if(head==NULL){
+        return;
+    }
+    free_bst(head->left);
+    free_bst(head->right);
+    free(head);
+}
+
 void task5(){
 /*
 Remove the largest element in a binary search tree. Do this by removing the rightmost child
@@ -142,14 +152,6 @@ while (cursor2!=NULL){
 
 free_bst(head);
 
-}
-void free_bst(BST_Node* head){
-    if(head==NULL){
-        return;
-    }
-    free_bst(head->left);
-    free_bst(head->right);
-    free(head);
 }
 
 int main(int argc, char* argv[]){
