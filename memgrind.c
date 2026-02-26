@@ -139,6 +139,7 @@ while (cursor2!=NULL){
     else if(cursor2->right==NULL && cursor2->left!=NULL){
         cursor->right = cursor2->left;
         free(cursor2);
+        break;
     }
     else{
         cursor2 = cursor2->right;
