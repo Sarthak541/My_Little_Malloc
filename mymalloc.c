@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-
 #define MEMLENGTH 4096
 
 //static initialization variable
@@ -15,7 +14,7 @@ static union {
 typedef struct{
     unsigned int data_size;
     bool is_free;
-    char padding[3];
+
 } Metadata;
 
 // function to add the initial metadata to the heap
