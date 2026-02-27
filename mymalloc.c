@@ -14,7 +14,6 @@ static union {
 typedef struct{
     unsigned int data_size;
     bool is_free;
-
 } Metadata;
 
 // function to add the initial metadata to the heap
