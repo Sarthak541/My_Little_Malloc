@@ -42,7 +42,7 @@ We do this by allocating objects until the heap is full, freeing the objects the
 - Check if the heap coalesces metadata
 We do this by allocating many tiny objects, freeing them, then allocating 1 big object
 
-- Test if malloc works if the Memory size allocated is too large
+- Test if malloc works if the memory size allocated is too large
 
 Additionally, we have added leak detection which applies anytime malloc is used.  This is implemented with an exit handler
 during initialization and is present within mymalloc.c
