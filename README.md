@@ -1,15 +1,18 @@
-# Systems Programming : Project 1
-## My Little Malloc
 
-The authors of this project are Sarthak Talukdar st1332,  and Yaswanth Gosukonda yg547
+# Personal implementation of Malloc Project.
 
-## Section 1 - mymalloc.c design + testing myfree()
+### Build Guide
+In order to build this project, you must have gcc installed.  After cloning the repository, type "make" in the terminal
+to compile the executables.  You can run the executables to test the code.  Type "make clean" to remove all executables
+and object files.
 
 ### Intro
 My understanding of malloc is that we are creating a global variable called a HEAP, which is
-basically an array, and using that to store variable data.  To do this we have metadata that
+basically an array, and using that to store variable data.  To do this I used metadata that
 tells us the size of the allocated memory and whether or not it is free.  Our metadata acts like
 a linked list because the size of the allocated memory tells us where the next metadata will be.
+
+## Section 1 - mymalloc.c design + testing myfree()
 
 ### myfree()
 To begin, let me explain our process of creating myfree().  We first call a function to check for 
@@ -18,11 +21,7 @@ a valid pointer.  This does 3 things -
 - Checks if pointer is out of bounds of the heap
 - Checks if the pointer is valid within the heap
 If not then the pointer is not valid.  Finally we check if the pointer has already been freed. 
-Since double free is an error, this also results in another error message.  To test free we created 
-3 files. 
-- test1.c: tries to free a pointer out of bound, the argument is a pointer that has not been created with malloc 
-- test2.c: tries to free the wrong address, the argument pointer which is off by 1 
-- test3.c: tries to perform a double free, the first argument and second argument are both pointers which point to the same memory address.
+Since double free is an error, this also results in another error message.
 Every time we called free we also called coalesce, which is an O(n) operation to check for free.
 There are further optimizations for this coalesce() function which we chose not to pursue.
 
@@ -33,20 +32,17 @@ a splitting function for mymalloc().  If my malloc() does not work, we printed t
 
 ## Section 2 - memtest.c
 
-As mentioned earlier we tested myfree() partially through the 3 test files.  memtest() serves to test everything else.
-Basically, the difference is that in memtest(), we test whether or not an error occurs and in the other three files an
-error is guaranteed to occur and there would be something very concerning if it did not occur.  The testing are as follows:
+memtest.c tests the following -
 
-- First we check if malloc reserves any unallocated memory as shown in the writeup
+- Check if malloc reserves any unallocated memory
 
-- Next we check if free deallocates memory
+- Check if free deallocates memory
 We do this by allocating objects until the heap is full, freeing the objects then allocating the objects again
 
-- Third we checked if the heap coalesces metadata
+- Check if the heap coalesces metadata
 We do this by allocating many tiny objects, freeing them, then allocating 1 big object
 
-- Fourth we test if malloc works if the Memory size allocated is too large
-It does not.
+- Test if malloc works if the Memory size allocated is too large
 
 Additionally, we have added leak detection which applies anytime malloc is used.  This is implemented with an exit handler
 during initialization and is present within mymalloc.c
