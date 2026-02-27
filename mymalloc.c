@@ -17,11 +17,19 @@ typedef struct{
 
 // function to add the initial metadata to the heap
 void initialize_heap(){
+    // dom't do anything if initialized
+    if(initialized){
+        return;
+    }
+    
     Metadata * initial_metadata = (Metadata *)heap.bytes;
-
     // initialize the metadata size, the first metadata is the size of the entire free space available
     initial_metadata -> data_size = MEMLENGTH - sizeof(Metadata);
     initial_metadata -> is_free = true;
+
+    //handle exit handler during initialization
+    atexit(check_memory_leak_exit);
+    initialized=true;
 }
 
 //exit logic
@@ -52,15 +60,8 @@ void check_memory_leak_exit(){
 
 //malloc logic
 void * mymalloc (size_t size, char *file, int line){
-    if (!initialized){
-        //initialize logic
-        initialize_heap();
-        
-        //set exit handler
-        atexit(check_memory_leak_exit);
-        
-        initialized = true;
-    }
+
+    initialize_heap();
 
     char* heap_end = (char*)heap.bytes+MEMLENGTH;
     char* cur_heap_spot = (char*)heap.bytes;
@@ -142,20 +143,12 @@ bool valid_pointer(void* ptr){
 
 //free logic
 void myfree (void *ptr, char *file, int line){
-    if (!initialized){
-        //initialize logic
-        initialize_heap();
-        
-        //set exit handler
-        atexit(check_memory_leak_exit);
-        
-        initialized = true;
-    }
+    initialize_heap();
     //code to go to the beginning of a metadata instead of the chunk
     if (valid_pointer(ptr)){
         Metadata* cur_metadata = (Metadata*)((char*) ptr - sizeof(Metadata));
         cur_metadata->is_free = true;
-    }
+    } 
     else{
         fprintf(stderr,"free: Inappropriate pointer (%s:%d)\n",file,line);
         exit(2);
