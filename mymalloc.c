@@ -11,8 +11,8 @@ static union {
 } heap;
 
 typedef struct{
-    int data_size;
-    int prev_data_size;
+    int next_data_size;
+    unsigned int prev_data_size;
 } Metadata;
 
 void initialize_heap();
@@ -32,7 +32,7 @@ void initialize_heap(){
     Metadata * initial_metadata = (Metadata *)heap.bytes;
     // initialize the metadata size, the first metadata is the size of the entire free space available
     // negative data size means it is being used/unavailable, positive means it is available
-    initial_metadata -> data_size = MEMLENGTH - sizeof(Metadata);
+    initial_metadata -> next_data_size = MEMLENGTH - sizeof(Metadata);
 
     //handle exit handler during initialization
     atexit(check_memory_leak_exit);
@@ -52,12 +52,12 @@ void check_memory_leak_exit(){
         Metadata* cur_metadata = (Metadata*)current;
         
         //logic if a leak is found
-        if ( cur_metadata->data_size<0){
-            total_bytes_leaked+=abs(cur_metadata->data_size);
+        if ( cur_metadata->next_data_size<0){
+            total_bytes_leaked+=abs(cur_metadata->next_data_size);
             num_objects_leaked+=1;
         }
         
-        current+=sizeof(Metadata)+abs(cur_metadata->data_size);
+        current+=sizeof(Metadata)+abs(cur_metadata->next_data_size);
     }
     if(total_bytes_leaked>0){
         fprintf(stderr,"mymalloc: %zu bytes leaked in %zu objects.\n",total_bytes_leaked,num_objects_leaked);
@@ -76,21 +76,21 @@ void * mymalloc (size_t size, char *file, int line){
     size_t size_req = (size+7)&~7;
     while (cur_heap_spot<heap_end){
         Metadata* cur_metadata = (Metadata*)cur_heap_spot;
-        if (cur_metadata->data_size>0 && cur_metadata->data_size>=size_req){
+        if (cur_metadata->next_data_size>0 && cur_metadata->next_data_size>=size_req){
             //Splitting process, we'll split if we can reasonably fit another metadata
             size_t split_req = size_req + sizeof(Metadata) + 8;
             //we will split if we can fit a new metadata and at least 8 bytes
-            if (cur_metadata->data_size>=split_req){
+            if (cur_metadata->next_data_size>=split_req){
                 char* new_metadata_spot = cur_heap_spot + sizeof(Metadata) + size_req;
                 Metadata* new_metadata = (Metadata*) new_metadata_spot;
-                new_metadata->data_size = cur_metadata->data_size-size_req-sizeof(Metadata);
-                cur_metadata->data_size=size_req;
+                new_metadata->next_data_size = cur_metadata->next_data_size-size_req-sizeof(Metadata);
+                cur_metadata->next_data_size=size_req;
             }
-            cur_metadata->data_size*=-1;
+            cur_metadata->next_data_size*=-1;
             
             return cur_heap_spot+sizeof(Metadata);
         }
-        cur_heap_spot+=sizeof(Metadata)+abs(cur_metadata->data_size);
+        cur_heap_spot+=sizeof(Metadata)+abs(cur_metadata->next_data_size);
     }
     return NULL;
 }
@@ -102,7 +102,7 @@ void coalesce() {
     while (curleft < heap_end) {
         Metadata* left_m = (Metadata*)curleft;
         
-        char* curright = curleft + sizeof(Metadata) + abs(left_m->data_size);
+        char* curright = curleft + sizeof(Metadata) + abs(left_m->next_data_size);
 
         // If the right block is outside the heap, we end
         if (curright >= heap_end) {
@@ -111,9 +111,9 @@ void coalesce() {
 
         Metadata* right_m = (Metadata*)curright;
 
-        if (left_m->data_size>0 && right_m->data_size>0) {
+        if (left_m->next_data_size>0 && right_m->next_data_size>0) {
             // Merge logic
-            left_m->data_size += sizeof(Metadata) + right_m->data_size;
+            left_m->next_data_size += sizeof(Metadata) + right_m->next_data_size;
         } else {
             // No merge so iterate
             curleft = curright;
@@ -139,9 +139,9 @@ bool valid_pointer(void* ptr){
         char* payload = current + sizeof(Metadata);
         if(payload == (char*)ptr){
             //matches payload , return true if payload is not free
-            return cur_metadata->data_size<0;
+            return cur_metadata->next_data_size<0;
         }
-        current += sizeof(Metadata) + abs(cur_metadata->data_size);
+        current += sizeof(Metadata) + abs(cur_metadata->next_data_size);
     }
     //pointer in bounds but does not match chunk's payload
     return false;
@@ -153,7 +153,7 @@ void myfree (void *ptr, char *file, int line){
     //code to go to the beginning of a metadata instead of the chunk
     if (valid_pointer(ptr)){
         Metadata* cur_metadata = (Metadata*)((char*) ptr - sizeof(Metadata));
-        cur_metadata->data_size*= -1;
+        cur_metadata->next_data_size*= -1;
     } 
     else{
         fprintf(stderr,"free: Inappropriate pointer (%s:%d)\n",file,line);
