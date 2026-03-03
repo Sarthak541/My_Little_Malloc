@@ -15,6 +15,13 @@ typedef struct{
     bool is_free;
 } Metadata;
 
+void initialize_heap();
+void check_memory_leak_exit();
+void* mymalloc(size_t size, char* file, int line);
+void coalesce();
+bool valid_pointer(void* ptr);
+void myfree (void *ptr, char *file, int line);
+
 // function to add the initial metadata to the heap
 void initialize_heap(){
     // don't do anything if initialized
