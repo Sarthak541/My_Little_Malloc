@@ -92,3 +92,14 @@ mymalloc.o: mymalloc.c mymalloc.h
 	$(CC) $(CFLAGS) -c mymalloc.c
 
 mymalloc.h is added for all the compilations because it contains the function prototypes. Just like mymalloc.o is there for all of the linking.
+
+## Future Goals
+
+- Combine memtest.c and memgrind.c into 1 file called testsuite.c
+- Implement all test cases including the check of free
+- Implement a new unsafe free function (ufree()) that does not check if a pointer is valid before doing free
+- Implement the O(1) coalesce and free using doubly linked lists
+- Improve ReadMe.md by moving the concept explanation to the wiki
+- Change the makefile to make an extra -DREALMALLOC and -DLEAK for the test file
+- Separate testsuite.c into 3 functions.  Test that check whether a function works, tests that check if an error is triggered, test memgrind.c for intensive workload testing
+- Improve the binary tree task into a more creative task in memgrind.c
