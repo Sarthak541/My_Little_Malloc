@@ -33,6 +33,8 @@ void initialize_heap(){
     // initialize the metadata size, the first metadata is the size of the entire free space available
     // negative data size means it is being used/unavailable, positive means it is available
     initial_metadata -> next_data_size = MEMLENGTH - sizeof(Metadata);
+    //Basically the prev_data_size = 0 is the initial metadata
+    initial_metadata -> prev_data_size = 0;
 
     //handle exit handler during initialization
     atexit(check_memory_leak_exit);
@@ -84,7 +86,8 @@ void * mymalloc (size_t size, char *file, int line){
                 char* new_metadata_spot = cur_heap_spot + sizeof(Metadata) + size_req;
                 Metadata* new_metadata = (Metadata*) new_metadata_spot;
                 new_metadata->next_data_size = cur_metadata->next_data_size-size_req-sizeof(Metadata);
-                cur_metadata->next_data_size=size_req;
+                new_metadata->prev_data_size = size_req;
+                cur_metadata->next_data_size = size_req;
             }
             cur_metadata->next_data_size*=-1;
             
