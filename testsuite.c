@@ -206,7 +206,7 @@ void memgrind(){
 
 }
 
-int main() {
+void memtest(){
 	char *obj[OBJECTS];
 	int i, j, errors = 0;
 	
@@ -317,8 +317,12 @@ int main() {
 			free(large);
 		}
 	}
-	memgrind();
 
+}
+int main() {
+	memgrind();
+	memtest();
+	
 	// Requirement Tested: leaked objects detected 
 	if (LEAK){
 		printf("\n Test: Leak detection \n");
