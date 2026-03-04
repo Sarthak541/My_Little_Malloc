@@ -95,7 +95,7 @@ mymalloc.h is added for all the compilations because it contains the function pr
 
 ## Future Goals
 
-- Combine memtest.c and memgrind.c into 1 file called testsuite.c
+- Combine memtest.c and memgrind.c into 1 file called testsuite.c -COMPLETED
 - Implement all test cases including the check of free
 - Implement a new unsafe free function (ufree()) that does not check if a pointer is valid before doing free
 - Implement the O(1) coalesce and free using doubly linked lists - COMPLETED
