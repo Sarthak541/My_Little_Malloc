@@ -2,7 +2,7 @@
 *.o
 
 #Executables
-memtest
+testsuite
 memgrind
 
 

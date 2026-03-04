@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g -fsanitize=address,undefined
 
 # List both executables here
-TARGETS = memtest memgrind
+TARGETS = testsuite memgrind
 
 # Common object files
 LIB_OBJ = mymalloc.o
@@ -11,8 +11,8 @@ LIB_OBJ = mymalloc.o
 all: $(TARGETS)
 
 # Link memtest
-memtest: memtest.o $(LIB_OBJ)
-	$(CC) $(CFLAGS) -o memtest memtest.o $(LIB_OBJ)
+testsuite: testsuite.o $(LIB_OBJ)
+	$(CC) $(CFLAGS) -o testsuite testsuite.o $(LIB_OBJ)
 
 # Link memgrind
 memgrind: memgrind.o $(LIB_OBJ)
@@ -22,8 +22,8 @@ memgrind: memgrind.o $(LIB_OBJ)
 mymalloc.o: mymalloc.c mymalloc.h
 	$(CC) $(CFLAGS) -c mymalloc.c
 
-memtest.o: memtest.c mymalloc.h
-	$(CC) $(CFLAGS) -c memtest.c
+testsuite.o: testsuite.c mymalloc.h
+	$(CC) $(CFLAGS) -c testsuite.c
 
 memgrind.o: memgrind.c mymalloc.h
 	$(CC) $(CFLAGS) -c memgrind.c
