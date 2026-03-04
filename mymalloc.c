@@ -21,6 +21,7 @@ void* mymalloc(size_t size, char* file, int line);
 void coalesce(void* ptr);
 bool valid_pointer(void* ptr);
 void myfree (void *ptr, char *file, int line);
+void unsafe_free (void *ptr, char *file, int line);
 
 // function to add the initial metadata to the heap
 void initialize_heap(){
@@ -203,4 +204,10 @@ void myfree (void *ptr, char *file, int line){
 
 }
 
+void unsafe_free (void *ptr, char *file, int line){
+    initialize_heap();
+    Metadata* cur_metadata = (Metadata*)((char*)ptr - sizeof(Metadata));
+    cur_metadata->next_data_size*=-1;
+    coalesce(ptr);
+}
 
