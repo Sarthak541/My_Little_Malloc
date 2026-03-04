@@ -25,6 +25,7 @@ void task2();
 void task3();
 void task4();
 void task5();
+
 typedef struct BST_Node{
     struct BST_Node* left;
     struct BST_Node* right;
@@ -38,6 +39,7 @@ void task1(){
         free(my_obj);
     }
 }
+
 void task2(){
     char *ptrs[120];
     for(int i =0; i < 120; i++){
@@ -47,6 +49,7 @@ void task2(){
         free(ptrs[i]);
     }
 }
+
 void task3() {
     char *ptrs[120];
     int current_count = 0;
@@ -75,6 +78,7 @@ void task3() {
         free(ptrs[i]);
     }
 }
+
 void task4(){
 /*
 Get rid of every even element in a linked list.
@@ -128,49 +132,49 @@ then free the third element
 }
 
 void task5(){
-/*
-Remove the largest element in a binary search tree. Do this by removing the rightmost child
-*/
+	/*
+	Remove the largest element in a binary search tree. Do this by removing the rightmost child
+	*/
 
-BST_Node* head = malloc(sizeof(BST_Node));
-head->data = 8;
-head->left = malloc(sizeof(BST_Node));
-head->left->left=NULL;
-head->left->right=NULL;
-head->left->data = 4;
-head->right = malloc(sizeof(BST_Node));
-head->right->data= 12;
-head->right->left = malloc(sizeof(BST_Node));
-head->right->left->data = 10;
-head->right->left->left = NULL;
-head->right->left->right = NULL;
-head->right->right=malloc(sizeof(BST_Node));
-head->right->right->data = 14;
-head->right->right->left = NULL;
-head->right->right->right = NULL;
+	BST_Node* head = malloc(sizeof(BST_Node));
+	head->data = 8;
+	head->left = malloc(sizeof(BST_Node));
+	head->left->left=NULL;
+	head->left->right=NULL;
+	head->left->data = 4;
+	head->right = malloc(sizeof(BST_Node));
+	head->right->data= 12;
+	head->right->left = malloc(sizeof(BST_Node));
+	head->right->left->data = 10;
+	head->right->left->left = NULL;
+	head->right->left->right = NULL;
+	head->right->right=malloc(sizeof(BST_Node));
+	head->right->right->data = 14;
+	head->right->right->left = NULL;
+	head->right->right->right = NULL;
 
-BST_Node* cursor = head;
-BST_Node* cursor2 = head->right;
+	BST_Node* cursor = head;
+	BST_Node* cursor2 = head->right;
 
-while (cursor2 != NULL) {
-    if (cursor2->right == NULL) { // We found the largest!
-        if (cursor2->left == NULL) {
-            cursor->right = NULL;
-        } else {
-            cursor->right = cursor2->left;
-        }
-        free(cursor2);
-        cursor2 = NULL; // EXIT the loop
-    }
-    else {
-        cursor = cursor2; // Keep cursor one step behind cursor2
-        cursor2 = cursor2->right;
-    }
+	while (cursor2 != NULL) {
+		if (cursor2->right == NULL) { // We found the largest!
+			if (cursor2->left == NULL) {
+				cursor->right = NULL;
+			} else {
+				cursor->right = cursor2->left;
+			}
+			free(cursor2);
+			cursor2 = NULL; // EXIT the loop
+		}
+		else {
+			cursor = cursor2; // Keep cursor one step behind cursor2
+			cursor2 = cursor2->right;
+		}
+	}
+
+	free_bst(head);
 }
 
-free_bst(head);
-
-}
 void free_bst(BST_Node* head){
     if(head==NULL){
         return;
@@ -201,9 +205,8 @@ void memgrind(){
    printf("Workload average: %ld microseconds\n", elapsed / 50);
 
 }
-int 
-main (int argc, char **argv)
-{
+
+int main() {
 	char *obj[OBJECTS];
 	int i, j, errors = 0;
 	
