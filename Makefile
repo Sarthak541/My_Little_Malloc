@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g -fsanitize=address,undefined
 
-# List both executables here
-TARGETS = testsuite realmalloc
+# List all executables here
+TARGETS = testsuite realmalloc leaker
 
 # Common object files
 LIB_OBJ = mymalloc.o
@@ -16,7 +16,10 @@ testsuite: testsuite.o $(LIB_OBJ)
 
 #Compile realmalloc
 realmalloc: testsuite.c
-	$(CC) $(CFLAGS) -DREALMALLOC -DLEAK -o realmalloc testsuite.c
+	$(CC) $(CFLAGS) -DREALMALLOC -o realmalloc testsuite.c
+
+leaker: testsuite.c
+	$(CC) $(CFLAGS) -DREALMALLOC -DLEAK -o leaker testsuite.c
 
 # Compile rules
 mymalloc.o: mymalloc.c mymalloc.h
