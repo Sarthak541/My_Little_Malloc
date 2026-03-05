@@ -131,29 +131,31 @@ then free the third element
         free(temp);
     }
 }
+BST_Node* insert_node(BST_Node* head, int toinsert){
+	
+	if (head==NULL){
+		BST_Node* new_val = malloc(sizeof(BST_Node));
+		//handle memory allocation failure
+		if (new_val==NULL) return NULL;
+		
+		new_val->data=toinsert;
+		new_val->left=NULL;
+		new_val->right=NULL;
+		
+		return new_val;
+	}
+	else if(head->data>toinsert){
+		head->left = insert_node(head->left,toinsert);
+	}
+	else if(head->data<=toinsert){
+		head->right = insert_node(head->right,toinsert);
+	}
 
-void task5(){
-	/*
-	Remove the largest element in a binary search tree. Do this by removing the rightmost child
-	*/
+	return head;
 
-	BST_Node* head = malloc(sizeof(BST_Node));
-	head->data = 8;
-	head->left = malloc(sizeof(BST_Node));
-	head->left->left=NULL;
-	head->left->right=NULL;
-	head->left->data = 4;
-	head->right = malloc(sizeof(BST_Node));
-	head->right->data= 12;
-	head->right->left = malloc(sizeof(BST_Node));
-	head->right->left->data = 10;
-	head->right->left->left = NULL;
-	head->right->left->right = NULL;
-	head->right->right=malloc(sizeof(BST_Node));
-	head->right->right->data = 14;
-	head->right->right->left = NULL;
-	head->right->right->right = NULL;
+}
 
+void remove_rightmost_child(BST_Node* head){
 	BST_Node* cursor = head;
 	BST_Node* cursor2 = head->right;
 
@@ -172,7 +174,19 @@ void task5(){
 			cursor2 = cursor2->right;
 		}
 	}
+}
 
+void task5(){
+	/*
+	Remove the largest element in a random size binary search tree. Do this by removing the rightmost child
+	*/
+	int tree_size = (rand()%5)+5;
+	BST_Node* head = NULL;
+	for( int i = 0; i< tree_size; i++){
+		int val = rand()%20+5;
+		head = insert_node(head,val);
+	}
+	remove_rightmost_child(head);
 	free_bst(head);
 }
 
