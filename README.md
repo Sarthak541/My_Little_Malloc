@@ -103,3 +103,4 @@ mymalloc.h is added for all the compilations because it contains the function pr
 - Change the makefile to make an extra -DREALMALLOC and -DLEAK for the test file -COMPLETED
 - Separate testsuite.c into 3 functions.  Test that check whether a function works, tests that check if an error is triggered, test memgrind.c for intensive workload testing
 - Improve the binary tree task into a more creative task in memgrind.c
+- Remove all warnings during compilation by fixing the warnings
