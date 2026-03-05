@@ -360,10 +360,11 @@ void error_test(){
 	// malloc rejects too large allocations
 	printf("\n Test: allocate an object that is too big\n");
 	int* my_array = (int*)malloc(sizeof(int)*MEMSIZE*2);
-	if (my_array == NULL){
-		fprintf(stderr,"Malloc unable to allocate size too large\n");
-	}
 
+	if(my_array==NULL){
+		printf("\n Test: Free null pointer\n");
+		free(NULL);
+	}
 	printf("\n Test: double free\n");
 	int* my_val = (int*)malloc(sizeof(int)*3);
 	free(my_val);
@@ -388,11 +389,16 @@ void error_test(){
 
 int main() {
 
-	//wrappers are used to bypass the macro
+	printf("\n ----------------------Testing-Begins--------------------- \n");
+
+	printf("\n Test: safe free function \n");
+
+	//wrappers are used to bypass the macros
 	memtest(free_wrapper);
 
 	#ifndef REALMALLOC
-	
+	printf("\n Test: unsafe free function \n");
+
 	memtest(ufree_wrapper);
 
 	#else
@@ -404,6 +410,8 @@ int main() {
 	error_test();
 
 	memgrind();
+	
+	printf("\n -----------------------Testing-Ends---------------------- \n");
 	
 	return EXIT_SUCCESS;
 }

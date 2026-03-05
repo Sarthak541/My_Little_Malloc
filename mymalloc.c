@@ -21,7 +21,7 @@ void* mymalloc(size_t size, char* file, int line);
 void coalesce(void* ptr);
 bool valid_pointer(void* ptr);
 void myfree (void *ptr, char *file, int line);
-void unsafe_free (void *ptr, char *file, int line);
+void unsafe_free (void *ptr);
 
 // function to add the initial metadata to the heap
 void initialize_heap(){
@@ -76,12 +76,13 @@ void * mymalloc (size_t size, char *file, int line){
     char* heap_end = (char*)heap.bytes+MEMLENGTH;
     char* cur_heap_spot = (char*)heap.bytes;
 
-    size_t size_req = (size+7)&~7;
+    size = (int)size;
+    int size_req = (size+7)&~7;
     while (cur_heap_spot<heap_end){
         Metadata* cur_metadata = (Metadata*)cur_heap_spot;
         if (cur_metadata->next_data_size>0 && cur_metadata->next_data_size>=size_req){
             //Splitting process, we'll split if we can reasonably fit another metadata
-            size_t split_req = size_req + sizeof(Metadata) + 8;
+            int split_req = size_req + sizeof(Metadata) + 8;
             //we will split if we can fit a new metadata and at least 8 bytes
             if (cur_metadata->next_data_size>=split_req){
                 char* new_metadata_spot = cur_heap_spot + sizeof(Metadata) + size_req;
@@ -104,6 +105,9 @@ void * mymalloc (size_t size, char *file, int line){
         }
         cur_heap_spot+=sizeof(Metadata)+abs(cur_metadata->next_data_size);
     }
+    
+    fprintf(stderr,"Malloc unable to allocate, size too large.  Error at line %d in file %s \n", line, file);
+
     return NULL;
 }
 
@@ -194,16 +198,16 @@ void myfree (void *ptr, char *file, int line){
     if (valid_pointer(ptr)){
         Metadata* cur_metadata = (Metadata*)((char*) ptr - sizeof(Metadata));
         cur_metadata->next_data_size*= -1;
+        coalesce(ptr);
     } 
     else{
         fprintf(stderr,"free: Inappropriate pointer (%s:%d)\n",file,line);
     }
 
-    coalesce(ptr);
 
 }
 
-void unsafe_free (void *ptr, char *file, int line){
+void unsafe_free (void *ptr){
     initialize_heap();
     Metadata* cur_metadata = (Metadata*)((char*)ptr - sizeof(Metadata));
     cur_metadata->next_data_size*=-1;
