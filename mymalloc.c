@@ -197,7 +197,6 @@ void myfree (void *ptr, char *file, int line){
     } 
     else{
         fprintf(stderr,"free: Inappropriate pointer (%s:%d)\n",file,line);
-        exit(2);
     }
 
     coalesce(ptr);
