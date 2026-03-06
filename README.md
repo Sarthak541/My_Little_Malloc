@@ -19,7 +19,7 @@ The malloc() function in C allows the user to dynamically allocate memory at run
 In order to build and run this project, here are the required steps-
 
 ```bash
-git clone https://github.com/Sarthak541/C_Malloc_Implementation
+git clone https://github.com/Sarthak541/C_Malloc_Implementation.git
 make
 ./realmalloc
 ./leaker
