@@ -32,7 +32,7 @@ make clean
 
 ## Section 1 - mymalloc.c 
 
-As mentioned previously, malloc() is a function used to dynamically allocate memory at runtime. For example, if we are storing data of variable size, then a fixed length of memory may be insufficient for our needs.  Therefore, it is crucial for programmers to use malloc() and fix this issue. 
+As mentioned previously, malloc() is a function used to dynamically allocate memory at runtime. For example, if we are storing data of variable size, then a fixed length of memory may be insufficient for our needs.  Therefore, it is crucial for programmers to use malloc() to fix this issue. 
 
 ### Section 1 part 1 - Heap
 
