@@ -26,8 +26,12 @@ make
 ./testsuite
 ```
 
-After cloning the repository, type "make" in the terminal to compile the executables.  You can run the executables to test the code.  Type "make clean" to remove all executables
-and object files.
+After cloning the repository, type "make" in the terminal to compile the executables.  You can run the executables to test the code.  
+```bash
+make clean
+```
+
+Type "make clean" to remove all executables and object files.
 
 ### Understanding malloc
 My understanding of malloc is that we are creating a global variable called a HEAP, which is
