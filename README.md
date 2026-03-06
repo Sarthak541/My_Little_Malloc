@@ -30,11 +30,13 @@ After cloning the repository, type "make" in the terminal to compile the executa
 make clean
 ```
 
-## Section 1 - mymalloc.c explanation
+## Section 1 - mymalloc.c 
 
-As mentioned previously, malloc() is a function used to dynamically allocate memory at rub time.  The reason this is important is that sometimes we do not know the size of the data we are storing.  For example, if we are storing something of variable size, then a fixed length of memory may be insufficient to store the data.  To fix this issue, programmers use the malloc() function to store variable data in a place in memory referred to as the heap. As such, in order to manage malloc and free, it is important to create data structures that help to initialize and manage the heap.
+As mentioned previously, malloc() is a function used to dynamically allocate memory at runtime. For example, if we are storing data of variable size, then a fixed length of memory may be insufficient for our needs.  Therefore, it is crucial for programmers to use malloc() and fix this issue. 
 
-### Section 1 part 1 - the heap
+### Section 1 part 1 - Heap
+
+Memory allocated using malloc() belongs to a region of memory known as the **heap**.  In our implementation, the heap is a union of a very large array of chars and a double variable titled "not used".  As the name implies, the "not used" variable is never once used in our codebase, and the union's only purpose is to allign the heap to 8 bytes of memory and enable the use of pointer arithmetic.  Additionally, the heap is specifically an array of chars as opposed to any other type of array because a char is the smallest unit of memory in C, meaning that it also allows us to easily use pointer arithmetic on the memory addresses in the array. 
 
 ### myfree()
 To begin, let me explain our process of creating myfree().  We first call a function to check for 
