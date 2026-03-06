@@ -30,15 +30,11 @@ After cloning the repository, type "make" in the terminal to compile the executa
 make clean
 ```
 
+## Section 1 - mymalloc.c explanation
 
+As mentioned previously, malloc() is a function used to dynamically allocate memory at rub time.  The reason this is important is that sometimes we do not know the size of the data we are storing.  For example, if we are storing something of variable size, then a fixed length of memory may be insufficient to store the data.  To fix this issue, programmers use the malloc() function to store variable data in a place in memory referred to as the heap. As such, in order to manage malloc and free, it is important to create data structures that help to initialize and manage the heap.
 
-### Understanding malloc
-My understanding of malloc is that we are creating a global variable called a HEAP, which is
-basically an array, and using that to store variable data.  To do this I used metadata that
-tells us the size of the allocated memory and whether or not it is free.  Our metadata acts like
-a linked list because the size of the allocated memory tells us where the next metadata will be.
-
-## Section 1 - mymalloc.c design + testing myfree()
+### Section 1 part 1 - the heap
 
 ### myfree()
 To begin, let me explain our process of creating myfree().  We first call a function to check for 
